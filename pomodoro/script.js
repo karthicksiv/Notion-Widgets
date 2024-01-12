@@ -1,34 +1,40 @@
-document.getElementById('start-button').addEventListener('click', startTimer);
-document.getElementById('reset-button').addEventListener('click', resetTimer);
-
 let isTimerRunning = false;
-let timerDuration = 25 * 60; // 25 minutes
-let timerId;
+let timerDuration = 25 * 60; // 25 minutes in seconds
+let interval;
 
-function startTimer() {
-    if (!isTimerRunning) {
-        isTimerRunning = true;
-        timerId = setInterval(() => {
-            if (timerDuration > 0) {
-                timerDuration--;
-                updateDisplay();
-            } else {
-                alert('Time is up!');
+const timerDisplay = document.getElementById('timer');
+const startStopBtn = document.getElementById('start-stop-btn');
+
+startStopBtn.addEventListener('click', function() {
+    if (isTimerRunning) {
+        clearInterval(interval);
+        startStopBtn.textContent = 'Start';
+    } else {
+        startStopBtn.textContent = 'Stop';
+        interval = setInterval(function() {
+            if (timerDuration <= 0) {
+                clearInterval(interval);
+                alert('Pomodoro complete!');
                 resetTimer();
+                return;
             }
+            timerDuration--;
+            updateTimerDisplay();
         }, 1000);
     }
+    isTimerRunning = !isTimerRunning;
+});
+
+function updateTimerDisplay() {
+    const minutes = Math.floor(timerDuration / 60);
+    const seconds = timerDuration % 60;
+    timerDisplay.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
 function resetTimer() {
-    clearInterval(timerId);
     timerDuration = 25 * 60;
-    updateDisplay();
-    isTimerRunning = false;
+    updateTimerDisplay();
+    startStopBtn.textContent = 'Start';
 }
 
-function updateDisplay() {
-    const minutes = Math.floor(timerDuration / 60);
-    const seconds = timerDuration % 60;
-    document.getElementById('timer-display').textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
+updateTimerDisplay();
