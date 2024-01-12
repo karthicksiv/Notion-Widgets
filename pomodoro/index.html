@@ -7,11 +7,22 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="pomodoro-container">
+
+<template id="pomo-timer-template">
+    <div>
         <div id="timer-display">25:00</div>
-        <button id="start-button">Start</button>
-        <button id="reset-button">Reset</button>
+        <input id="work-time" type="number" value="25" hidden>
+        <input id="break-time" type="number" value="5" hidden>
+        <button id="start-btn">Start</button>
+        <button id="pause-btn">Pause</button>
+        <button id="reset-btn">Reset</button>
+        <div id="completed-cycles">Completed Cycles: 0</div>
     </div>
-    <script src="script.js"></script>
+</template>
+
+<pomo-timer></pomo-timer>
+
+<script src="script.js"></script>
+
 </body>
 </html>
